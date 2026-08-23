@@ -1,0 +1,45 @@
+[
+  {
+    "id": "autodesk-revit-samples",
+    "displayName": "Autodesk Revit SDK Samples",
+    "repositoryUrl": "https://github.com/jeremytammik/RevitSdkSamples",
+    "license": null,
+    "attribution": "Autodesk Revit SDK sample authors",
+    "enabled": false,
+    "include": ["**/*.cs", "**/*.md"],
+    "exclude": ["**/bin/**", "**/obj/**"]
+  },
+  {
+    "id": "the-building-coder-samples",
+    "displayName": "The Building Coder Samples",
+    "repositoryUrl": "https://github.com/jeremytammik/the_building_coder_samples",
+    "license": "MIT",
+    "attribution": "Jeremy Tammik",
+    "enabled": false,
+    "revision": "main",
+    "include": ["**/*.cs", "**/*.md"],
+    "exclude": ["**/bin/**", "**/obj/**"]
+  },
+  {
+    "id": "nice3point-revittoolkit",
+    "displayName": "Nice3point Revit Toolkit",
+    "repositoryUrl": "https://github.com/Nice3point/RevitToolkit",
+    "license": "MIT",
+    "attribution": "Nice3point",
+    "enabled": false,
+    "revision": "master",
+    "include": ["**/*.cs", "**/*.md"],
+    "exclude": ["**/bin/**", "**/obj/**"]
+  },
+  {
+    "id": "ricaun-revit-test",
+    "displayName": "ricaun RevitTest",
+    "repositoryUrl": "https://github.com/ricaun-io/RevitTest",
+    "license": "MIT",
+    "attribution": "ricaun",
+    "enabled": false,
+    "revision": "main",
+    "include": ["**/*.cs", "**/*.md"],
+    "exclude": ["**/bin/**", "**/obj/**"]
+  }
+]

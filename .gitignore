@@ -1,0 +1,63 @@
+# .NET build and publish output
+[Bb]in/
+[Oo]bj/
+[Aa]rtifacts/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+[Ll]og/
+[Ll]ogs/
+[Tt]est[Rr]esult*/
+*.trx
+*.binlog
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+
+# Test, coverage, and benchmark output
+TestResult.xml
+nunit-*.xml
+*.VisualState.xml
+coverage*.json
+coverage*.xml
+coverage*.info
+*.coverage
+CodeCoverage/
+BenchmarkDotNet.Artifacts/
+
+# IDE and user state
+.vs/
+.idea/
+.vscode/
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+*.suo
+*.user
+*.userosscache
+*.userprefs
+*.rsuser
+*.sln.docstates
+
+# Local worktrees, caches, configuration, and secrets
+.worktrees/
+.cache/
+.env
+.env.*
+!.env.example
+.claude/settings.local.json
+*.pfx
+*.p12
+*.pem
+*.key
+
+# OS/editor temporary files
+Thumbs.db
+.DS_Store
+Desktop.ini
+~$*
+*~
+*.tmp
+*.bak

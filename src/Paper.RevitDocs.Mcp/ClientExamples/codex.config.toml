@@ -1,0 +1,5 @@
+[mcp_servers.paper-revit-docs]
+command = 'C:\Tools\Paper.RevitDocs.Mcp\Paper.RevitDocs.Mcp.exe'
+args = []
+startup_timeout_sec = 20
+tool_timeout_sec = 60
