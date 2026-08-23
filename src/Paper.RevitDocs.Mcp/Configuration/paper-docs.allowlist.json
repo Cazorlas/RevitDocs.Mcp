@@ -1,0 +1,15 @@
+{
+  "include": [
+    "README.md",
+    "docs/help/**/*.md",
+    "docs/public/**/*.md"
+  ],
+  "exclude": [
+    "CLAUDE.md",
+    "CODEX.md",
+    "AGENTS.md",
+    "INSTRUCTION.md",
+    "docs/progress/**",
+    "docs/superpowers/**"
+  ]
+}
