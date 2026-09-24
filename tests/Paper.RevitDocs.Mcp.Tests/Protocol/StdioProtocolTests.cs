@@ -140,4 +140,84 @@ public sealed class StdioProtocolTests
             Directory.Delete(publicRoot, true);
         }
     }
+
+    /// <summary>
+    /// A client that checks structured content against the tool's output schema (Claude Code 2.1 does) refused every
+    /// search whose next cursor or revision was unknown: the schema requires the property, and a null one was left out.
+    /// </summary>
+    [Test]
+    [CancelAfter(20_000)]
+    public async Task StructuredContent_WithUnknownValues_StillHasEveryRequiredProperty()
+    {
+        var publicRoot = Path.Combine(Path.GetTempPath(), "PaperMcpProtocol", Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(publicRoot);
+        await File.WriteAllTextAsync(Path.Combine(publicRoot, "README.md"), "# Schema fixture\nSchemaFixtureUnique content");
+        var server = Environment.GetEnvironmentVariable("PAPER_MCP_SERVER_PATH")
+                     ?? typeof(Paper.RevitDocs.Mcp.Tools.RevitDocsTools).Assembly.Location;
+        var publishedExecutable = Path.GetExtension(server).Equals(".exe", StringComparison.OrdinalIgnoreCase);
+        var transport = new StdioClientTransport(new StdioClientTransportOptions
+        {
+            Name = "Paper Revit Docs schema test",
+            Command = publishedExecutable ? server : "dotnet",
+            Arguments = publishedExecutable ? [] : [server],
+            WorkingDirectory = Path.GetDirectoryName(server),
+            EnvironmentVariables = new Dictionary<string, string?> { ["PAPER_REVIT_DOCS_ROOT"] = publicRoot }
+        });
+        try
+        {
+            await using var client = await McpClient.CreateAsync(transport);
+            var search = (await client.ListToolsAsync()).Single(tool => tool.Name == "revit_docs_search");
+
+            var result = await client.CallToolAsync("revit_docs_search", new Dictionary<string, object?>
+            {
+                ["query"] = "SchemaFixtureUnique", ["sources"] = new[] { "paper-public" }, ["limit"] = 3
+            });
+
+            using var schema = JsonDocument.Parse(JsonSerializer.Serialize(search.ProtocolTool.OutputSchema));
+            using var content = JsonDocument.Parse(JsonSerializer.Serialize(result.StructuredContent));
+            Assert.That(content.RootElement.GetProperty("results").GetArrayLength(), Is.GreaterThan(0), "the fixture is found");
+            Assert.That(MissingRequired(schema.RootElement, schema.RootElement, content.RootElement, "$"), Is.Empty);
+        }
+        finally
+        {
+            Directory.Delete(publicRoot, true);
+        }
+    }
+
+    /// <summary>Every property the schema requires that the data leaves out, by path; $ref resolved against the root.</summary>
+    private static List<string> MissingRequired(JsonElement root, JsonElement schema, JsonElement data, string path)
+    {
+        var missing = new List<string>();
+        if (schema.TryGetProperty("$ref", out var reference))
+        {
+            var target = root;
+            foreach (var part in reference.GetString()!.TrimStart('#', '/').Split('/', StringSplitOptions.RemoveEmptyEntries))
+                target = target.GetProperty(part);
+            return MissingRequired(root, target, data, path);
+        }
+
+        if (data.ValueKind == JsonValueKind.Object)
+        {
+            if (schema.TryGetProperty("required", out var required))
+            {
+                foreach (var name in required.EnumerateArray().Select(n => n.GetString()!))
+                    if (!data.TryGetProperty(name, out _)) missing.Add(path + "." + name);
+            }
+
+            if (schema.TryGetProperty("properties", out var properties))
+            {
+                foreach (var property in properties.EnumerateObject())
+                    if (data.TryGetProperty(property.Name, out var value))
+                        missing.AddRange(MissingRequired(root, property.Value, value, path + "." + property.Name));
+            }
+        }
+        else if (data.ValueKind == JsonValueKind.Array && schema.TryGetProperty("items", out var items))
+        {
+            var index = 0;
+            foreach (var item in data.EnumerateArray())
+                missing.AddRange(MissingRequired(root, items, item, path + "[" + index++ + "]"));
+        }
+
+        return missing;
+    }
 }
