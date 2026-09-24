@@ -13,6 +13,12 @@ Changelog, and versioned releases will follow Semantic Versioning once release t
 - Self-contained Windows publishing and published-process protocol verification.
 - Repository-local guidance, skills, and hooks for Codex and Claude Code.
 
+### Fixed
+
+- Structured tool results keep every property their output schema requires, writing unknown values as
+  `null`; clients that validate structured content (Claude Code 2.1) had refused results with no next cursor or
+  revision.
+
 ### Security
 
 - Deny-wins Paper document policy, canonical path containment, bounded remote content, and explicit

@@ -54,7 +54,13 @@ builder.Services.AddSingleton<DocumentSourceRegistry>(serviceProvider =>
 });
 builder.Services.AddSingleton<DocumentSearchService>();
 builder.Services.AddSingleton<DocumentReadService>();
-builder.Services.AddMcpServer().WithStdioServerTransport().WithTools<RevitDocsTools>();
+// Unknown values are written as null, never left out: the output schema requires every property, and a client that
+// checks structured content against it (Claude Code 2.1) refused each result whose cursor or revision was unknown.
+var toolJson = new JsonSerializerOptions(ModelContextProtocol.McpJsonUtilities.DefaultOptions)
+{
+    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.Never
+};
+builder.Services.AddMcpServer().WithStdioServerTransport().WithTools<RevitDocsTools>(toolJson);
 
 var host = builder.Build();
 await host.Services.GetRequiredService<DocumentStore>().InitializeAsync(CancellationToken.None);
