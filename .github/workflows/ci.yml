@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify (build, test, vulnerable packages)
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Run scripts/verify.ps1
+        shell: powershell
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
+
+  package:
+    name: Publish and check win-x64 package
+    needs: verify
+    if: github.event_name != 'pull_request'
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Run scripts/publish.ps1
+        shell: powershell
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish.ps1
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: Paper.RevitDocs.Mcp-win-x64
+          path: artifacts/release-win-x64-*
+          retention-days: 30

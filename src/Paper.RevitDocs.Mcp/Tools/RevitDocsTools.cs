@@ -61,8 +61,9 @@ public sealed class RevitDocsTools(
     {
         if (string.IsNullOrWhiteSpace(query)) throw new ArgumentException("query is required.", nameof(query));
         if (limit is < 1 or > 50) throw new ArgumentOutOfRangeException(nameof(limit), "limit must be from 1 to 50.");
-        if (version.HasValue && version is < 2019 or > 2027)
-            throw new ArgumentOutOfRangeException(nameof(version), "revitVersion must be from 2019 to 2027.");
+        if (version.HasValue && !RevitVersions.IsSupported(version.Value))
+            throw new ArgumentOutOfRangeException(nameof(version),
+                $"revitVersion must be from {RevitVersions.Minimum} to {RevitVersions.Maximum}.");
         if (!Enum.TryParse<DocumentQueryMode>(queryMode, true, out var mode))
             throw new ArgumentException("queryMode must be auto, symbol, or text.", nameof(queryMode));
         var page = await search.SearchAsync(new DocumentSearchQuery(query.Trim(), version, sources,

@@ -15,7 +15,7 @@ public sealed class RvtDocsSource(BoundedHttpClient http) : IDocumentSearchSourc
         if (string.IsNullOrWhiteSpace(query.Query)) return [];
         try
         {
-            int[] versions = query.RevitVersion.HasValue ? [query.RevitVersion.Value] : Enumerable.Range(2019, 9).Reverse().ToArray();
+            IReadOnlyList<int> versions = query.RevitVersion.HasValue ? [query.RevitVersion.Value] : RevitVersions.NewestFirst;
             var searches = versions.Select(version => SearchVersionAsync(query, version, cancellationToken));
             return (await Task.WhenAll(searches)).SelectMany(result => result)
                 .DistinctBy(result => result.ResultId, StringComparer.Ordinal)

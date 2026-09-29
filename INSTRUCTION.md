@@ -14,10 +14,19 @@ code, and explicitly allowlisted Paper user documentation. User-facing tools are
 - Codex and Claude project guidance, skills, and Claude Code hooks are repository-local.
 - Public repository metadata now includes Apache-2.0 attribution, contributor guidance, private
   vulnerability reporting, and a curated changelog; README is the public entry point.
+- Supported Revit years (2019-2027) are defined once in `Documents/RevitVersions.cs`.
+- GitHub automation is checked in: Windows CI (`ci.yml`), Dependabot, a weekly watch for new Revit
+  releases and rvtdocs.com API changes (`maintenance.yml`), and an `@claude` workflow (`claude.yml`).
+  Procedures are in `docs/maintenance.md`.
 
 ## Validation
 
-- `scripts/verify.ps1`: 55 passed, 3 skipped, 0 failed; Release build completed with 0 warnings
+- `scripts/verify.ps1` (2026-09-30, after centralizing Revit versions): 60 passed, 3 skipped, 0 failed;
+  Release build 0 warnings and 0 errors; no vulnerable packages. Explicit live smoke tests passed 2/2
+  for Revit 2024 and 2027.
+- `scripts/check-revit-release.ps1` reported no Revit 2028 on rvtdocs.com or NuGet on 2026-09-30, and
+  detected 2027 on both when run with `-Supported 2026`. All workflows pass `actionlint`.
+- Earlier baseline `scripts/verify.ps1`: 55 passed, 3 skipped, 0 failed; Release build completed with 0 warnings
   and 0 errors; no vulnerable NuGet packages were reported by the configured sources.
 - `scripts/publish.ps1`: self-contained `win-x64` package protocol lane passed 4/4 tests.
 - Explicit live `rvtdocs.com` search/read smoke test passed 1/1 for Revit 2024.
@@ -39,6 +48,9 @@ Do not update it without changing and freshly compiling the affected tests.
 ## Known gaps
 
 - Claude Desktop visible-UI interoperability has not been verified.
+- Claude-driven GitHub work (`claude.yml`, the `fix` job of `maintenance.yml`) needs the Claude GitHub
+  App and the `CLAUDE_CODE_OAUTH_TOKEN` secret, which are not configured yet. Until then the weekly
+  watch only opens issues. The scheduled and Claude workflows have not yet run on GitHub.
 - Public sample sources remain disabled until their license and attribution are reviewed.
 - Symlink-escape tests may skip on Windows hosts without symbolic-link privileges.
 - `Paper.UnitTest` currently compiles under both `DB2024` and the documented `DB2027` test lane, but
@@ -49,5 +61,7 @@ Do not update it without changing and freshly compiling the affected tests.
 
 ## Next action
 
-Review the disabled public-source manifests and their attribution before enabling any additional
-source, then perform the remaining Claude Desktop visible-UI smoke test.
+Run `/install-github-app` from Claude Code for this repository to enable Claude-driven fixes, then
+trigger `Scheduled maintenance` once manually. After that, review the disabled public-source
+manifests and their attribution before enabling any additional source, then perform the remaining
+Claude Desktop visible-UI smoke test.

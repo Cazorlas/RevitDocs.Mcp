@@ -15,7 +15,7 @@ if ($LASTEXITCODE -ne 0) {
     exit 0
 }
 $relevant = $changed | Where-Object {
-    $_ -match '(src/|tests/|scripts/|docs/|\.claude/|\.agents/|\.sln$|\.csproj$|\.gitignore$|AGENTS\.md$|CLAUDE\.md$|CODEX\.md$|INSTRUCTION\.md$|README\.md$|CONTRIBUTING\.md$|SECURITY\.md$|CHANGELOG\.md$|LICENSE$|NOTICE$)'
+    $_ -match '(src/|tests/|scripts/|docs/|\.github/|\.claude/|\.agents/|\.sln$|\.csproj$|\.gitignore$|AGENTS\.md$|CLAUDE\.md$|CODEX\.md$|INSTRUCTION\.md$|README\.md$|CONTRIBUTING\.md$|SECURITY\.md$|CHANGELOG\.md$|LICENSE$|NOTICE$)'
 }
 if (-not $relevant) { exit 0 }
 

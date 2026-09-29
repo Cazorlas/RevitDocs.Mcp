@@ -1,0 +1,30 @@
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    labels: [dependencies]
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      # Pinned on purpose: NUnit 4.6 adds Action overloads that make the existing
+      # Assert.Multiple(...) lambdas ambiguous. See INSTRUCTION.md before lifting this.
+      - dependency-name: NUnit
+      # The product targets net8.0; Microsoft.* 9.x/10.x packages would pull a newer runtime line.
+      - dependency-name: Microsoft.Extensions.*
+        update-types: [version-update:semver-major]
+      - dependency-name: Microsoft.Data.Sqlite
+        update-types: [version-update:semver-major]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    labels: [dependencies]
+    groups:
+      actions:
+        patterns: ["*"]
