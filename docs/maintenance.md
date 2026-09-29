@@ -12,8 +12,21 @@ Claude Code GitHub automation follow the same procedures; [AGENTS.md](../AGENTS.
 | `.github/workflows/claude-code-review.yml` | Every same-repository, non-Dependabot pull request | Claude reviews the diff and posts inline comments. |
 | `.github/workflows/claude.yml` | `@claude` from an owner, member, or collaborator | Claude Code investigates, changes code, and opens or updates a pull request. |
 | `.github/dependabot.yml` | Weekly (NuGet), monthly (Actions) | Opens grouped update pull requests. NUnit stays pinned; see [INSTRUCTION.md](../INSTRUCTION.md). |
+| `.github/workflows/dependabot-automerge.yml` | After CI passes on a Dependabot pull request | Merges minor and patch updates whose commits are all Dependabot's and whose exact head commit passed Windows CI, using `AUTOMERGE_TOKEN`. Major updates stay open. |
 
 Every automated change arrives as a pull request. CI on that pull request is the merge gate.
+
+### Branch protection
+
+Two rulesets protect `main`:
+
+- `main: PR + CI required` has no bypass: every change needs a pull request whose
+  `Verify (build, test, vulnerable packages)` check passed, and force-pushes and deletion are blocked.
+- `main: only admin merges` restricts updates to repository admins. A user-owned repository cannot
+  grant bypass to GitHub Actions, so the Dependabot auto-merge merges with `AUTOMERGE_TOKEN`, a
+  fine-grained token of the admin limited to this repository (Contents and Pull requests: read and
+  write). Renew it before it expires; without it, qualifying pull requests are only reported. Admins merge with `gh pr merge <n> --merge --admin`
+  or the web "Merge without waiting for requirements" option; that skips only this ruleset.
 
 ### One-time setup
 
@@ -58,8 +71,8 @@ When the live smoke tests fail:
 
 ## Dependency updates
 
-Dependabot pull requests merge when CI passes and the changelog of each updated package shows no
-behavior change that matters here. `ModelContextProtocol` updates also need the protocol tests in
+Minor and patch Dependabot pull requests merge automatically once CI passes. Review major updates by
+hand: read the package changelog for behavior changes that matter here. `ModelContextProtocol` updates also need the protocol tests in
 `tests/Paper.RevitDocs.Mcp.Tests/Protocol` and a check that the four tool names and their read-only
 annotations are unchanged. Do not lift the NUnit pin without the test rewrite described in
 `INSTRUCTION.md`.
