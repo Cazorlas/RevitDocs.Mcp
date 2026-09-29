@@ -26,5 +26,7 @@ updates:
       interval: monthly
     labels: [dependencies]
     groups:
+      # Major action upgrades arrive as separate pull requests and are merged by hand.
       actions:
         patterns: ["*"]
+        update-types: [minor, patch]
