@@ -18,6 +18,10 @@ code, and explicitly allowlisted Paper user documentation. User-facing tools are
 - GitHub automation is checked in: Windows CI (`ci.yml`), Dependabot, a weekly watch for new Revit
   releases and rvtdocs.com API changes (`maintenance.yml`), and an `@claude` workflow (`claude.yml`).
   Procedures are in `docs/maintenance.md`.
+- `main` is protected by two rulesets: `main: PR + CI required` (no bypass) and `main: only admin
+  merges`. A direct push to `main` was rejected with GH013. Claude reviews same-repository,
+  non-Dependabot pull requests, and `dependabot-automerge.yml` merges minor/patch Dependabot updates
+  after CI.
 
 ## Validation
 
@@ -50,7 +54,11 @@ Do not update it without changing and freshly compiling the affected tests.
 - Claude Desktop visible-UI interoperability has not been verified.
 - The Claude GitHub App and `CLAUDE_CODE_OAUTH_TOKEN` secret were installed on 2026-09-30. A manual
   `Scheduled maintenance` run passed (no Revit 2028; live smoke 2/2), but its issue/`fix` path and the
-  `@claude` and PR-review workflows have not yet run end to end on GitHub.
+  `@claude` workflow has not yet run end to end on GitHub.
+- Dependabot auto-merge needs the `AUTOMERGE_TOKEN` secret (admin fine-grained token, this repository
+  only), because a user-owned repository cannot grant ruleset bypass to GitHub Actions (API 422).
+  Without it, qualifying pull requests are only reported. Its decision step was dry-run locally
+  against real pull requests; the merge step has not yet run on GitHub.
 - Public sample sources remain disabled until their license and attribution are reviewed.
 - Symlink-escape tests may skip on Windows hosts without symbolic-link privileges.
 - `Paper.UnitTest` currently compiles under both `DB2024` and the documented `DB2027` test lane, but
