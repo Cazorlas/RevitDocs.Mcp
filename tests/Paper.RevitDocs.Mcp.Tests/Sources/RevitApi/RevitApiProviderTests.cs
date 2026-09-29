@@ -28,6 +28,25 @@ public sealed class RevitApiProviderTests
     }
 
     [Test]
+    public async Task SearchAsync_WithoutVersionQueriesEverySupportedVersionNewestFirst()
+    {
+        var requested = new List<int>();
+        using var http = Client(request =>
+        {
+            var version = System.Web.HttpUtility.ParseQueryString(request.RequestUri!.Query)["v"];
+            lock (requested) requested.Add(int.Parse(version!));
+            return Response(HttpStatusCode.OK, "{\"results\": []}", "application/json");
+        });
+        var source = new RvtDocsSource(new BoundedHttpClient(http, 1024));
+
+        await source.SearchAsync(new DocumentSearchQuery("Wall", null), default);
+
+        Assert.That(requested.Order(), Is.EqualTo(Enumerable.Range(RevitVersions.Minimum,
+            RevitVersions.Maximum - RevitVersions.Minimum + 1)));
+        Assert.That(RevitVersions.NewestFirst.First(), Is.EqualTo(RevitVersions.Maximum));
+    }
+
+    [Test]
     public async Task ExtractAsync_UsesMainContentAndOmitsNavigation()
     {
         var html = await ReadFixtureAsync("revit-api-page.html");

@@ -27,7 +27,8 @@ DB/RL year configuration or add a Revit/PaperPlus runtime reference.
 ## Source changes
 
 - Revit API docs: confirm behavior from the current provider response or a checked-in fixture; do not
-  guess API members or versions.
+  guess API members or versions. A new Revit year or a provider shape change follows
+  `docs/maintenance.md`; the supported years live only in `Documents/RevitVersions.cs`.
 - Public code: maintainers edit `repository-sources.json`; review license and attribution before
   enabling, and keep sync explicit.
 - Paper docs: maintainers edit `paper-docs.allowlist.json`; fixed denies and canonical containment

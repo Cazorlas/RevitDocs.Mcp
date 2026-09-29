@@ -40,6 +40,9 @@ not duplicate these rules. Current evidence belongs only in `INSTRUCTION.md`.
   branching in tool handlers.
 - Bound network time, response size, content size, result count, pagination, archive extraction, and
   cache paths. Validate canonical paths before file access.
+- The supported Revit years live only in `src/Paper.RevitDocs.Mcp/Documents/RevitVersions.cs`. New
+  Revit releases, rvtdocs.com API changes, and dependency updates follow
+  [docs/maintenance.md](docs/maintenance.md), which also describes the CI and scheduled automation.
 - Keep credentials out of source and tool arguments. A future credentialed provider must use a named
   environment variable and must not persist or log its value.
 - Use test-first changes for behavior. Parser tests use checked-in fixtures; online tests are explicit

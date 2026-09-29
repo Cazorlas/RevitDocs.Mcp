@@ -73,6 +73,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish.ps1
 # Deliberately run the live rvtdocs.com smoke test
 dotnet test tests/Paper.RevitDocs.Mcp.Tests/Paper.RevitDocs.Mcp.Tests.csproj `
   -c Release --filter "FullyQualifiedName~RevitApiOnlineSmokeTests"
+
+# Check whether a Revit release newer than the supported range has appeared
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-revit-release.ps1
 ```
 
 Build success proves compilation only. Client-visible behavior and live providers require their own
@@ -107,6 +110,8 @@ For an administrator-owned manifest outside the installation directory, set
 - `.claude/settings.json` provides SessionStart context and a conditional Stop verification hook.
 - `.agents/skills/revit-docs-mcp` and `.claude/skills/revit-docs-mcp` contain the same project skill.
 - [INSTRUCTION.md](INSTRUCTION.md) records verified current state, gaps, and the next action.
+- [docs/maintenance.md](docs/maintenance.md) covers CI, the weekly Revit-release and provider watch,
+  the `@claude` GitHub workflow, Dependabot, and the procedure for supporting a new Revit version.
 
 ## Project policy
 

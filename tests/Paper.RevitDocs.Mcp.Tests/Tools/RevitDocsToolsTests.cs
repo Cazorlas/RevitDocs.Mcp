@@ -21,6 +21,29 @@ public sealed class RevitDocsToolsTests
     }
 
     [Test]
+    public async Task Search_AcceptsNewestSupportedVersion()
+    {
+        var registry = new DocumentSourceRegistry([new FakeSource()]);
+        var tools = new RevitDocsTools(new DocumentSearchService(registry), new DocumentReadService(registry), registry);
+
+        var response = await tools.SearchAsync("Wall", RevitVersions.Maximum, null, "auto", 10, null, default);
+
+        Assert.That(response.Results, Is.Not.Empty);
+    }
+
+    [TestCase(RevitVersions.Minimum - 1)]
+    [TestCase(RevitVersions.Maximum + 1)]
+    public void Search_RejectsUnsupportedVersion(int version)
+    {
+        var registry = new DocumentSourceRegistry([new FakeSource()]);
+        var tools = new RevitDocsTools(new DocumentSearchService(registry), new DocumentReadService(registry), registry);
+
+        Assert.That(async () => await tools.SearchAsync("Wall", version, null, "auto", 10, null, default),
+            Throws.TypeOf<ArgumentOutOfRangeException>()
+                .With.Message.Contains($"from {RevitVersions.Minimum} to {RevitVersions.Maximum}"));
+    }
+
+    [Test]
     public async Task Sources_ReportsEveryProviderState()
     {
         var registry = new DocumentSourceRegistry([new ThrowingSource(), new FakeSource()]);

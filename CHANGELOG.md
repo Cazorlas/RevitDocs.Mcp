@@ -12,6 +12,13 @@ Changelog, and versioned releases will follow Semantic Versioning once release t
 - Reviewed repository-source catalog and allowlisted Paper documentation provider.
 - Self-contained Windows publishing and published-process protocol verification.
 - Repository-local guidance, skills, and hooks for Codex and Claude Code.
+- GitHub Actions CI, Dependabot, a weekly watch for new Revit releases and rvtdocs.com API changes, and
+  an `@claude` workflow; see `docs/maintenance.md`.
+
+### Changed
+
+- The supported Revit years are defined once, in `RevitVersions`; the version-range error message and
+  version-less search both follow it.
 
 ### Fixed
 
