@@ -48,9 +48,9 @@ Do not update it without changing and freshly compiling the affected tests.
 ## Known gaps
 
 - Claude Desktop visible-UI interoperability has not been verified.
-- Claude-driven GitHub work (`claude.yml`, the `fix` job of `maintenance.yml`) needs the Claude GitHub
-  App and the `CLAUDE_CODE_OAUTH_TOKEN` secret, which are not configured yet. Until then the weekly
-  watch only opens issues. The scheduled and Claude workflows have not yet run on GitHub.
+- The Claude GitHub App and `CLAUDE_CODE_OAUTH_TOKEN` secret were installed on 2026-09-30. A manual
+  `Scheduled maintenance` run passed (no Revit 2028; live smoke 2/2), but its issue/`fix` path and the
+  `@claude` and PR-review workflows have not yet run end to end on GitHub.
 - Public sample sources remain disabled until their license and attribution are reviewed.
 - Symlink-escape tests may skip on Windows hosts without symbolic-link privileges.
 - `Paper.UnitTest` currently compiles under both `DB2024` and the documented `DB2027` test lane, but
@@ -61,7 +61,6 @@ Do not update it without changing and freshly compiling the affected tests.
 
 ## Next action
 
-Run `/install-github-app` from Claude Code for this repository to enable Claude-driven fixes, then
-trigger `Scheduled maintenance` once manually. After that, review the disabled public-source
+Review the disabled public-source
 manifests and their attribution before enabling any additional source, then perform the remaining
 Claude Desktop visible-UI smoke test.

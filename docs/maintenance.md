@@ -9,6 +9,7 @@ Claude Code GitHub automation follow the same procedures; [AGENTS.md](../AGENTS.
 | --- | --- | --- |
 | `.github/workflows/ci.yml` | Push to `main`, every pull request | Runs `scripts/verify.ps1` on Windows. On `main` it also runs `scripts/publish.ps1` and uploads the `win-x64` package. |
 | `.github/workflows/maintenance.yml` | Mondays 02:00 UTC, or manually | Checks for a Revit release newer than `RevitVersions.Maximum` and runs the live rvtdocs.com smoke tests. A finding opens a `maintenance` issue; when Claude is configured, Claude works the issue and opens a pull request. |
+| `.github/workflows/claude-code-review.yml` | Every same-repository, non-Dependabot pull request | Claude reviews the diff and posts inline comments. |
 | `.github/workflows/claude.yml` | `@claude` from an owner, member, or collaborator | Claude Code investigates, changes code, and opens or updates a pull request. |
 | `.github/dependabot.yml` | Weekly (NuGet), monthly (Actions) | Opens grouped update pull requests. NUnit stays pinned; see [INSTRUCTION.md](../INSTRUCTION.md). |
 
