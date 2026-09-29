@@ -2,8 +2,10 @@ name: Dependabot auto-merge
 
 # Merges a Dependabot pull request after Windows CI passes on its exact head commit, but only for
 # minor and patch updates. Major updates, and pull requests with commits from anyone else, stay open
-# for a maintainer. The "main: only admin merges" ruleset lets GitHub Actions bypass it for pull
-# requests only; the "main: PR + CI required" ruleset still applies.
+# for a maintainer. Rulesets on a user-owned repository cannot grant bypass to GitHub Actions, so the
+# merge uses AUTOMERGE_TOKEN: a fine-grained token of the repository admin, limited to this
+# repository (Contents and Pull requests: read and write). It bypasses only "main: only admin merges";
+# "main: PR + CI required" still applies. Without the secret the workflow only reports its decision.
 
 on:
   workflow_run:
@@ -31,9 +33,8 @@ jobs:
        github.event.workflow_run.actor.login == 'dependabot[bot]')
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
-      actions: write
+      contents: read
+      pull-requests: read
       checks: read
     env:
       GH_TOKEN: ${{ github.token }}
@@ -83,7 +84,10 @@ jobs:
         if: steps.decide.outputs.sha != ''
         env:
           SHA: ${{ steps.decide.outputs.sha }}
+          GH_TOKEN: ${{ secrets.AUTOMERGE_TOKEN }}
         run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::warning::AUTOMERGE_TOKEN is not set; #$PR qualifies but was left for a maintainer."
+            exit 0
+          fi
           gh pr merge "$PR" --merge --admin --delete-branch --match-head-commit "$SHA"
-          # Merges made with GITHUB_TOKEN do not trigger push workflows; run main CI and packaging explicitly.
-          gh workflow run ci.yml --ref main
