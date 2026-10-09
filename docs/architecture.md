@@ -2,7 +2,7 @@
 
 ## Process boundary
 
-`Paper.RevitDocs.Mcp` is a standalone `net8.0` process using MCP over STDIO. It does not reference the
+`Paper.RevitDocs.Mcp` is a standalone `net10.0` process using MCP over STDIO. It does not reference the
 Revit API, load into `Revit.exe`, or depend on PaperPlus. The executable owns composition; providers
 implement document-source contracts; search/read services normalize results; tool handlers expose the
 four bounded read-only operations.

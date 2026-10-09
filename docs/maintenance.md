@@ -30,6 +30,13 @@ Two rulesets protect `main`:
 
 ### One-time setup
 
+Dependabot auto-merge requires an admin-owned fine-grained personal access token stored as the repository Actions secret `AUTOMERGE_TOKEN`.
+The token resource owner is the repository owner; repository access is restricted to `RevitDocs.Mcp`, with Contents and Pull requests set to read and write.
+Metadata read access is included automatically.
+The token requires an expiration date and renewal before expiry.
+The token value belongs only in GitHub Actions secrets, never in a pull request, chat, or tracked file.
+The workflow reports a qualifying pull request without merging when this secret is absent.
+
 Claude-driven work needs the Claude GitHub App and a `CLAUDE_CODE_OAUTH_TOKEN` repository secret.
 From a Claude Code session in this checkout, run `/install-github-app` and choose this repository;
 it installs the app and stores the secret. Without them, the scheduled workflow still opens issues and
@@ -71,11 +78,21 @@ When the live smoke tests fail:
 
 ## Dependency updates
 
+Source builds and all SDK workflow lanes require .NET 10.
+Microsoft runtime packages follow the .NET 10 line; major package upgrades require a separate reviewed migration.
+
 Minor and patch Dependabot pull requests merge automatically once CI passes. Review major updates by
 hand: read the package changelog for behavior changes that matter here. `ModelContextProtocol` updates also need the protocol tests in
 `tests/Paper.RevitDocs.Mcp.Tests/Protocol` and a check that the four tool names and their read-only
 annotations are unchanged. Do not lift the NUnit pin without the test rewrite described in
 `INSTRUCTION.md`.
+
+## Reviewed source snapshots
+
+The source catalog pins enabled repositories to the commits recorded in [the source review](source-review.md).
+An updated revision requires a fresh license and attribution review, deterministic catalog tests, and explicit synchronization.
+Search never synchronizes a repository.
+Autodesk SDK content remains disabled pending resolution of the per-file distribution terms documented in that review.
 
 ## Releases
 

@@ -15,8 +15,8 @@
     "repositoryUrl": "https://github.com/jeremytammik/the_building_coder_samples",
     "license": "MIT",
     "attribution": "Jeremy Tammik",
-    "enabled": false,
-    "revision": "main",
+    "enabled": true,
+    "revision": "cf3748045978bc35fcae88417c3024209be44fbe",
     "include": ["**/*.cs", "**/*.md"],
     "exclude": ["**/bin/**", "**/obj/**"]
   },
@@ -26,8 +26,8 @@
     "repositoryUrl": "https://github.com/Nice3point/RevitToolkit",
     "license": "MIT",
     "attribution": "Nice3point",
-    "enabled": false,
-    "revision": "master",
+    "enabled": true,
+    "revision": "b5abec5ca7302e3adc4e821cd3a8a9d4f9032e7e",
     "include": ["**/*.cs", "**/*.md"],
     "exclude": ["**/bin/**", "**/obj/**"]
   },
@@ -37,8 +37,8 @@
     "repositoryUrl": "https://github.com/ricaun-io/RevitTest",
     "license": "MIT",
     "attribution": "ricaun",
-    "enabled": false,
-    "revision": "main",
+    "enabled": true,
+    "revision": "950a26455a14b0608e239747f074a413a3cbfd79",
     "include": ["**/*.cs", "**/*.md"],
     "exclude": ["**/bin/**", "**/obj/**"]
   }

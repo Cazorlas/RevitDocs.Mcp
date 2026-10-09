@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>RevitDocs.Mcp progress</title>
+<style>body{font:16px system-ui;max-width:960px;margin:40px auto;padding:0 20px;color:#17232d}table{border-collapse:collapse;width:100%}td,th{padding:12px;text-align:left;border-bottom:1px solid #ddd}th{background:#eef3f7}</style>
+<h1>Maintenance verification</h1>
+<p>2026-10-09. Public validation snapshot for <a href="https://github.com/Cazorlas/RevitDocs.Mcp/pull/10">PR #10</a>. Current merge status and CI results are recorded on that pull request. This board is excluded from the executable package and the documentation MCP's readable content.</p>
+<table><tr><th>Change</th><th>Evidence</th></tr>
+<tr><td>Runtime and dependencies</td><td>.NET 10; AngleSharp 1.8.4; Microsoft runtime packages 10.0.12. Boundary regression passed.</td></tr>
+<tr><td>Reviewed source snapshots</td><td>Catalog checks 4/4 passed; offline branch/full-SHA synchronizer checks 6/6 passed. Explicit snapshot search/read passed 3/3. Autodesk SDK remains disabled.</td></tr>
+<tr><td>Final local quality gate</td><td>65 passed, 3 skipped; Release build 0 warnings/errors; no vulnerable product packages reported.</td></tr>
+<tr><td>Provider smoke</td><td>Live RvtDocs search/read passed 2/2 for Revit 2024 and 2027.</td></tr>
+<tr><td>Client interoperability</td><td>Published-process protocol checks passed; Claude Desktop visible-UI validation remains pending.</td></tr>
+<tr><td>Auto-merge</td><td>Workflow and independent PR readback confirm Dependabot PR #9 merged successfully.</td></tr></table>
+<h2>Project license: MIT</h2>
+<p>Project license and attribution references use MIT; third-party licenses remain independent. License regression captured 2 failing checks before implementation; metadata passed afterward. The verified Windows package passed 5/5 protocol/package checks, with LICENSE and NOTICE matching repository files.</p>
+<h2>Repository description and client documentation</h2>
+<p>The server is independent of the AI provider and supports compatible local STDIO clients. README documents configuration examples, shared MCP Registry distribution, client plugin packaging, and requirements for remote connections. No registry listing or hosted HTTP transport is claimed.</p>
+<h2>Earlier maintenance baseline</h2>
+<p>The baseline before the review's extra synchronizer case passed 64 tests with 3 skipped. Final quality-gate results appear above. Supporting evidence is maintained in INSTRUCTION.md and docs/source-review.md.</p>
+</html>

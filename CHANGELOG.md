@@ -17,6 +17,9 @@ Changelog, and versioned releases will follow Semantic Versioning once release t
 
 ### Changed
 
+- The project license changes from Apache-2.0 to MIT with maintainer approval; published packages include the project LICENSE and NOTICE.
+- The standalone process targets .NET 10; AngleSharp is updated to `1.8.4`, and Microsoft.Extensions.Hosting and Microsoft.Data.Sqlite are updated to `10.0.12`.
+- Reviewed MIT-licensed repository sources are enabled at pinned commit revisions; synchronization remains explicit, and the Autodesk source remains disabled pending review.
 - The supported Revit years are defined once, in `RevitVersions`; the version-range error message and
   version-less search both follow it.
 

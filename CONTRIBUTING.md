@@ -5,7 +5,7 @@ must preserve that boundary.
 
 ## Development setup
 
-1. Install the .NET 8 SDK.
+1. Install the .NET 10 SDK.
 2. Clone the repository and create a short-lived feature or fix branch.
 3. Read `AGENTS.md`, `INSTRUCTION.md`, and the closest relevant source and tests.
 4. Run the baseline verification:

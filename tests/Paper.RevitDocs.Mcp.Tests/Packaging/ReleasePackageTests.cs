@@ -21,11 +21,24 @@ public sealed class ReleasePackageTests
             Assert.That(files.Any(path => path.EndsWith("paper-docs.allowlist.json", StringComparison.OrdinalIgnoreCase)), Is.True);
             Assert.That(files.Any(path => path.EndsWith("README.md", StringComparison.OrdinalIgnoreCase)), Is.True);
             Assert.That(files.Any(path => path.EndsWith("THIRD-PARTY-NOTICES.md", StringComparison.OrdinalIgnoreCase)), Is.True);
+            Assert.That(File.Exists(Path.Combine(root!, "LICENSE")), Is.True, "Published LICENSE is missing.");
+            Assert.That(File.Exists(Path.Combine(root!, "NOTICE")), Is.True, "Published NOTICE is missing.");
             Assert.That(files.Select(Path.GetFileName), Has.None.Matches<string>(name =>
                 name is not null && (name.Equals("CLAUDE.md", StringComparison.OrdinalIgnoreCase)
                                      || name.Equals("CODEX.md", StringComparison.OrdinalIgnoreCase)
                                      || name.Equals("AGENTS.md", StringComparison.OrdinalIgnoreCase)
                                      || name.Equals("INSTRUCTION.md", StringComparison.OrdinalIgnoreCase))));
+        });
+
+        var repositoryDirectory = new DirectoryInfo(TestContext.CurrentContext.TestDirectory);
+        while (repositoryDirectory != null && !File.Exists(Path.Combine(repositoryDirectory.FullName, "RevitDocs.Mcp.sln")))
+            repositoryDirectory = repositoryDirectory.Parent;
+        Assert.That(repositoryDirectory, Is.Not.Null, "Could not locate the repository license.");
+        var publishedLicense = File.ReadAllText(Path.Combine(root!, "LICENSE"));
+        Assert.Multiple(() =>
+        {
+            Assert.That(publishedLicense, Does.Contain("MIT License"));
+            Assert.That(publishedLicense, Is.EqualTo(File.ReadAllText(Path.Combine(repositoryDirectory!.FullName, "LICENSE"))));
         });
 
         var publicText = string.Join('\n', files.Where(path => Path.GetExtension(path) is ".json" or ".toml" or ".md")

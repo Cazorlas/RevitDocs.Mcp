@@ -1,5 +1,6 @@
 using System.IO.Compression;
 using System.Net;
+using System.Text.Json;
 using NUnit.Framework;
 using Paper.RevitDocs.Mcp.Sources.Repositories;
 using Paper.RevitDocs.Mcp.Storage;
@@ -28,20 +29,33 @@ public sealed class RepositorySynchronizerTests
         }
     }
 
-    [Test]
-    public async Task SyncAsync_RecordsResolvedCommitAndExtractedPath()
+    [TestCase("main", GitHubHandler.Sha)]
+    [TestCase("cf3748045978bc35fcae88417c3024209be44fbe", "cf3748045978bc35fcae88417c3024209be44fbe")]
+    public async Task SyncAsync_RecordsResolvedCommitAndExtractedPath(string configuredRevision, string resolvedRevision)
     {
         var root = Path.Combine(Path.GetTempPath(), "PaperRepoSync", Guid.NewGuid().ToString("N"));
         try
         {
-            using var client = new HttpClient(new GitHubHandler(CreateArchive("sample-sha/src/Sample.cs", "class Sample {}")));
-            var synced = await new RepositorySynchronizer(client, new CachePaths(root)).SyncAsync(Manifest(), default);
+            var handler = new GitHubHandler(CreateArchive("sample-sha/src/Sample.cs", "class Sample {}"), resolvedRevision);
+            using var client = new HttpClient(handler);
+            var manifest = Manifest() with { Revision = configuredRevision };
+            var synced = await new RepositorySynchronizer(client, new CachePaths(root)).SyncAsync(manifest, default);
+            var expectedSnapshot = Path.Combine(root, "repositories", manifest.Id, resolvedRevision);
+            var state = JsonSerializer.Deserialize<RepositorySyncState>(File.ReadAllText(
+                Path.Combine(root, "repositories", manifest.Id, "source-state.json")))!;
 
             Assert.Multiple(() =>
             {
-                Assert.That(synced.Revision, Is.EqualTo(GitHubHandler.Sha));
+                Assert.That(handler.RequestedUris, Is.EqualTo(new[]
+                {
+                    $"https://api.github.com/repos/example/sample/commits/{configuredRevision}",
+                    $"https://codeload.github.com/example/sample/zip/{resolvedRevision}"
+                }));
+                Assert.That(synced.Revision, Is.EqualTo(resolvedRevision));
+                Assert.That(synced.LocalPath, Is.EqualTo(expectedSnapshot));
                 Assert.That(File.Exists(Path.Combine(synced.LocalPath!, "src", "Sample.cs")), Is.True);
-                Assert.That(File.Exists(Path.Combine(root, "repositories", "sample", "source-state.json")), Is.True);
+                Assert.That(state.Revision, Is.EqualTo(resolvedRevision));
+                Assert.That(state.LocalPath, Is.EqualTo(expectedSnapshot));
             });
         }
         finally
@@ -122,8 +136,10 @@ public sealed class RepositorySynchronizerTests
     private sealed class GitHubHandler(byte[] archive, string? returnedSha = null) : HttpMessageHandler
     {
         public const string Sha = "0123456789abcdef0123456789abcdef01234567";
+        public List<string> RequestedUris { get; } = [];
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken token)
         {
+            RequestedUris.Add(request.RequestUri!.AbsoluteUri);
             if (request.RequestUri!.Host.Equals("api.github.com", StringComparison.OrdinalIgnoreCase))
                 return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
                     { Content = new StringContent($"{{\"sha\":\"{returnedSha ?? Sha}\"}}") });

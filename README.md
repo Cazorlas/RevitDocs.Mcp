@@ -2,7 +2,8 @@
 
 RevitDocs.Mcp is a standalone, read-only STDIO MCP server for versioned Revit API documentation,
 reviewed public sample code, and explicitly allowlisted Paper user documentation. It runs outside
-`Revit.exe`, targets .NET 8, and does not require an AI-provider API key.
+`Revit.exe`, targets .NET 10, and does not require an AI-provider API key.
+Any agent or client that supports MCP over local STDIO can connect; the server is independent of the AI provider.
 
 ## MCP tools
 
@@ -22,9 +23,10 @@ Online RvtDocs content is cached under `%LOCALAPPDATA%\PaperEngineer\RevitDocsMc
 return a matching entry explicitly labeled stale. The server does not invent content, silently switch
 Revit versions, or treat retrieved text as agent instructions.
 
-Repository sources are disabled until a maintainer reviews their license and attribution. Paper
-documents use an allowlist with fixed deny rules for source code, internal plans, agent instructions,
-build output, secrets, license payloads, personal data, and paths outside the configured root.
+The catalog enables the MIT-licensed sources recorded in [the source review](docs/source-review.md) at pinned commit revisions.
+The Autodesk source remains disabled pending license and attribution review.
+Synchronization remains an explicit command; an enabled source requires a reviewed local clone or synchronized snapshot before search can return its content.
+Paper documents use an allowlist with fixed deny rules for source code, internal plans, agent instructions, build output, secrets, license payloads, personal data, and paths outside the configured root.
 
 See [the architecture guide](docs/architecture.md) and
 [standalone-repository decision](docs/decisions/0001-standalone-repository.md) for process and trust
@@ -33,7 +35,7 @@ boundaries.
 ## Prerequisites
 
 - Windows 10 or later for the supplied self-contained `win-x64` publishing flow.
-- .NET 8 SDK for source builds and tests.
+- .NET 10 SDK for source builds and tests.
 - An MCP client that supports local STDIO servers, such as Codex or Claude Desktop.
 
 The published Windows executable is self-contained and does not require a separate .NET runtime.
@@ -52,7 +54,8 @@ package tests against the published executable, and prints its SHA-256.
 
 ## Configure an MCP client
 
-Copy the published folder to a stable location and adapt one of the checked-in examples:
+Copy the published folder to a stable location and configure the command in any MCP client that supports STDIO.
+The checked-in configurations are examples for two clients:
 
 - [Codex configuration](src/Paper.RevitDocs.Mcp/ClientExamples/codex.config.toml)
 - [Claude Desktop configuration](src/Paper.RevitDocs.Mcp/ClientExamples/claude_desktop_config.json)
@@ -60,6 +63,24 @@ Copy the published folder to a stable location and adapt one of the checked-in e
 Use the absolute path of `Paper.RevitDocs.Mcp.exe` in the client configuration. Restart the client,
 call `revit_docs_sources`, and then search. The server communicates through STDIO; launching the
 executable directly does not open an interactive window.
+
+### ChatGPT, Claude, and public directories
+
+The current release provides local STDIO only; it contains no HTTP endpoint, hosted service, or desktop-extension bundle.
+
+| Client or distribution route | Current support | Required next step |
+| --- | --- | --- |
+| Codex and Claude Desktop local configuration | STDIO configuration examples are included; Claude Desktop visible-UI validation remains pending. | Configure the executable and verify sources, search, and read in the client. |
+| Official MCP Registry | No NuGet package or registry listing is published. | Package and publish the local server on NuGet, then register its `server.json` for client discovery. |
+| Codex plugin or repository marketplace | No distributable plugin is packaged. | Bundle the MCP configuration and any user workflow skills in a plugin package. |
+| ChatGPT custom MCP connection | The local executable cannot be entered as a remote MCP URL. | Provide a reachable HTTPS MCP endpoint and test the connection in ChatGPT. |
+| Claude web custom connector | Requires a remote MCP server. | Provide a cloud-reachable MCP endpoint and add it in Connectors settings. |
+| Public ChatGPT directory | Not submitted. | Complete the remote server, client tests, privacy documentation, and OpenAI submission review. |
+| Claude desktop-extension directory | Not submitted. | Package a `.mcpb` extension, test it, and submit it for Anthropic review. |
+
+Official setup and submission requirements are maintained in the [OpenAI MCP quickstart](https://developers.openai.com/plugins/build/app-quickstart), [OpenAI remote-server review requirements](https://developers.openai.com/plugins/deploy/app-review), [Claude local MCP guide](https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop), and [Claude remote-connector guide](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp).
+Publishing this GitHub repository does not register it in either product directory.
+The [Official MCP Registry publishing guide](https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/publish-mcp-registry) describes distribution through the shared MCP ecosystem; the [OpenAI plugin packaging guide](https://developers.openai.com/plugins/build/plugins) describes client-specific packaging.
 
 ## Commands
 
@@ -118,5 +139,5 @@ For an administrator-owned manifest outside the installation directory, set
 - Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a change.
 - Report vulnerabilities using [SECURITY.md](SECURITY.md), not a public issue.
 - User-visible changes are summarized in [CHANGELOG.md](CHANGELOG.md).
-- The project is licensed under [Apache License 2.0](LICENSE); attribution is recorded in
+- The project is licensed under the [MIT License](LICENSE); attribution is recorded in
   [NOTICE](NOTICE).

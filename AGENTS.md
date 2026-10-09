@@ -16,7 +16,7 @@ not duplicate these rules. Current evidence belongs only in `INSTRUCTION.md`.
 
 ## Product boundary
 
-- `Paper.RevitDocs.Mcp` is a standalone `net8.0` STDIO process. It never loads into `Revit.exe`,
+- `Paper.RevitDocs.Mcp` is a standalone `net10.0` STDIO process. It never loads into `Revit.exe`,
   references no Revit assembly, and does not use PaperPlus DB/RL year configurations.
 - The MCP surface is read-only: `revit_docs_search`, `revit_docs_read`, `revit_code_search`, and
   `revit_docs_sources`. Do not add mutation, execution, installation, or arbitrary file-read tools.
@@ -55,7 +55,7 @@ not duplicate these rules. Current evidence belongs only in `INSTRUCTION.md`.
 - `CONTRIBUTING.md` owns contributor workflow, `SECURITY.md` owns private vulnerability reporting,
   `CHANGELOG.md` owns curated user-visible history, and `NOTICE` owns project attribution. Do not
   duplicate their full content in agent guidance.
-- Keep Apache License 2.0 unless a license change is explicitly approved. Third-party source content
+- Keep the MIT License unless a license change is explicitly approved. Third-party source content
   retains its own license and attribution; enabling a source never relicenses that content.
 - Public Markdown must not contain secrets, personal data, private machine paths, or claims not backed
   by current source or verification.
