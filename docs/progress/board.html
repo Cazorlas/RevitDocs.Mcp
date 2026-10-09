@@ -2,8 +2,9 @@
 <html lang="en"><meta charset="utf-8"><title>RevitDocs.Mcp progress</title>
 <style>body{font:16px system-ui;max-width:960px;margin:40px auto;padding:0 20px;color:#17232d}table{border-collapse:collapse;width:100%}td,th{padding:12px;text-align:left;border-bottom:1px solid #ddd}th{background:#eef3f7}</style>
 <h1>Maintenance verification</h1>
-<p>2026-10-09. Public validation snapshot for <a href="https://github.com/Cazorlas/RevitDocs.Mcp/pull/10">PR #10</a>. Current merge status and CI results are recorded on that pull request. This board is excluded from the executable package and the documentation MCP's readable content.</p>
+<p>2026-10-09. <a href="https://github.com/Cazorlas/RevitDocs.Mcp/pull/10">PR #10</a> merged at commit 100b5d5. The maintenance branch was removed locally and remotely; the main checkout was clean and synchronized. This board is excluded from the executable package and the documentation MCP's readable content.</p>
 <table><tr><th>Change</th><th>Evidence</th></tr>
+<tr><td>Merged-main release verification</td><td><a href="https://github.com/Cazorlas/RevitDocs.Mcp/actions/runs/37934538315">CI passed</a>: 67 tests passed, 1 skipped; 0 build warnings/errors; no vulnerable product packages. Windows protocol/package checks passed 5/5 and the artifact was uploaded. CI also executes the symlink checks skipped locally.</td></tr>
 <tr><td>Runtime and dependencies</td><td>.NET 10; AngleSharp 1.8.4; Microsoft runtime packages 10.0.12. Boundary regression passed.</td></tr>
 <tr><td>Reviewed source snapshots</td><td>Catalog checks 4/4 passed; offline branch/full-SHA synchronizer checks 6/6 passed. Explicit snapshot search/read passed 3/3. Autodesk SDK remains disabled.</td></tr>
 <tr><td>Final local quality gate</td><td>65 passed, 3 skipped; Release build 0 warnings/errors; no vulnerable product packages reported.</td></tr>

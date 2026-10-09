@@ -29,7 +29,8 @@ Any MCP-compatible agent or client with local STDIO support can connect; client 
 
 ## Validation
 
-- PR #10 contains the maintenance batch; review follow-up adds deterministic full-SHA synchronization coverage (exact commits/archive URLs, snapshot path, and persisted state), with focused checks passing 6/6.
+- PR #10 merged on 2026-10-09 at `100b5d55f2fc976fc3a3faf0e3b88872d552bfad`; the maintenance branch was removed locally and remotely, and the main checkout was clean and synchronized. Review follow-up adds deterministic full-SHA synchronization coverage (exact commits/archive URLs, snapshot path, and persisted state), with focused checks passing 6/6.
+- Merged-main CI run `37934538315` passed `scripts/verify.ps1` (67 passed, 1 skipped; 0 build warnings/errors; no vulnerable product packages) and `scripts/publish.ps1` (5/5 protocol/package checks). The Windows artifact is available on that run; executable SHA-256: `16A9C32CD996B4CB1525526476AF8A20BF779D609D6A1AFF73B9BC305381CA3C`. CI can execute the two symlink checks skipped on the local host.
 - Final local `scripts/verify.ps1` after review follow-up: 65 passed, 3 skipped, 0 failed; Release build 0 warnings/errors; no vulnerable product packages reported.
 - The maintainer explicitly approved the project license change from Apache-2.0 to MIT on 2026-10-09.
   `LICENSE`, `NOTICE`, README, project guidance, changelog, and source-review references now agree on MIT; third-party license metadata is unchanged.
