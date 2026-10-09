@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>RevitDocs.Mcp progress</title>
+<style>body{font:16px system-ui;max-width:960px;margin:40px auto;padding:0 20px;color:#17232d}table{border-collapse:collapse;width:100%}td,th{padding:12px;text-align:left;border-bottom:1px solid #ddd}th{background:#eef3f7}</style>
+<h1>Ship the maintenance batch</h1>
+<p>2026-10-09. User authorizes commit, push, PR merge, and task-branch cleanup. Final scope: client-independent MCP documentation, .NET 10 and dependency updates, reviewed source snapshots, MIT licensing, and package license files. Local checks and package verification passed; integrate the already-merged Dependabot update, then require fresh GitHub CI before merge. Runtime/source behavior is unchanged by shipping.</p>
+<h2>Project license: MIT</h2>
+<p>2026-10-09. Complete locally: project license and attribution references now use MIT; third-party source licenses remain independent. Locked red tests failed 2/2, green metadata passed 1/1. scripts/publish.ps1 ran verify.ps1: 64 passed, 3 skipped, clean build, no vulnerable packages. Published-process checks passed 5/5; independent readback confirms packaged LICENSE and NOTICE match repository files. MIT package: artifacts/release-win-x64-20261009-193455. No commit or push.</p>
+<h2>Repository description and client documentation</h2>
+<p>2026-10-09. GitHub description updated and independently read back. README now distinguishes local STDIO configuration, remote ChatGPT/Claude connections, and public directory review. Current official product documentation checked; relative Markdown links and git diff --check passed. README changes remain local; no remote transport, directory submission, commit, or push.</p>
+<h2>Maintenance: runtime and reviewed sources</h2>
+<p>2026-10-09. Local changes and verification; no commit, push, or GitHub merge.</p>
+<table><tr><th>Step</th><th>State and evidence</th></tr>
+<tr><td>Plan and baseline</td><td>Complete. 60 passed, 3 skipped; build clean; live RvtDocs 2/2 passed. No Revit 2028 signal.</td></tr>
+<tr><td>Runtime worker</td><td>Complete. Locked boundary test passed 1/1 on .NET 10; configuration diff reviewed.</td></tr>
+<tr><td>Source worker</td><td>Complete. Locked catalog tests: red 3 fail/1 pass, green 4/4 pass. Three MIT commits pinned; Autodesk SDK remains disabled.</td></tr>
+<tr><td>Documentation worker</td><td>Complete. Runtime documentation synchronized; both project skills validate and match.</td></tr>
+<tr><td>Final review and package</td><td>Complete. verify.ps1: 64 passed, 3 skipped, clean build, no vulnerable packages. Published-process protocol/package 5/5 passed. Live RvtDocs 2/2 and synchronized repository search/read 3/3 passed.</td></tr>
+<tr><td>Claude Desktop</td><td>Normal and Store-redirected configurations backed up and updated; existing RevGen entries preserved. A further restart is required after correcting Store config. Windows still blocks keyboard control; visible UI smoke remains pending.</td></tr>
+<tr><td>Auto-merge</td><td>Complete. After secret replacement, workflow 37929870985 passed. Independent readback: PR #9 merged at 2026-10-09T12:25:07Z, commit c5ea0f6ba2b8e91a21e27fc796c8ba147c1a52f7.</td></tr>
+<tr><td>Merge, release, cleanup</td><td>Dependabot PR #9 merged through the verified workflow. Runtime/source migration remains local and uncommitted; no public release. No task worktree created.</td></tr></table>
+</html>

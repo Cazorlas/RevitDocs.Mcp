@@ -24,7 +24,7 @@ public sealed class ProjectBoundaryTests
         RepositoryRoot, "src", "Paper.RevitDocs.Mcp", "Paper.RevitDocs.Mcp.csproj");
 
     [Test]
-    public void ProductProject_IsIndependentNet8Executable()
+    public void ProductProject_IsIndependentNet10Executable()
     {
         Assert.That(File.Exists(ProductProject), Is.True, $"Missing {ProductProject}");
 
@@ -37,7 +37,7 @@ public sealed class ProjectBoundaryTests
         Assert.Multiple(() =>
         {
             Assert.That(properties.Single(element => element.Name.LocalName == "TargetFramework").Value,
-                Is.EqualTo("net8.0"));
+                Is.EqualTo("net10.0"));
             Assert.That(properties.Single(element => element.Name.LocalName == "OutputType").Value,
                 Is.EqualTo("Exe"));
             Assert.That(references, Is.Empty);
@@ -147,8 +147,10 @@ public sealed class ProjectBoundaryTests
 
         Assert.Multiple(() =>
         {
-            Assert.That(license, Does.Contain("Apache License"));
-            Assert.That(license, Does.Contain("Version 2.0"));
+            Assert.That(license, Does.Contain("MIT License"));
+            Assert.That(license, Does.Contain("Copyright (c) 2026 Cazorlas"));
+            Assert.That(license, Does.Contain("Permission is hereby granted, free of charge"));
+            Assert.That(license, Does.Not.Contain("Apache License"));
             Assert.That(notice, Does.Contain("Copyright 2026 Cazorlas"));
             Assert.That(readme, Does.Contain("CONTRIBUTING.md"));
             Assert.That(readme, Does.Contain("SECURITY.md"));

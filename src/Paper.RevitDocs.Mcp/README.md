@@ -1,6 +1,7 @@
 # Paper Revit Docs MCP
 
-Local, read-only STDIO MCP server for Revit API documentation, reviewed public code sources, and explicitly allowlisted Paper user documentation. It runs as a separate `.NET 8` process and never loads into `Revit.exe`.
+Local, read-only STDIO MCP server for Revit API documentation, reviewed public code sources, and explicitly allowlisted Paper user documentation. It runs as a separate `.NET 10` process and never loads into `Revit.exe`.
+Any agent or client that supports MCP over local STDIO can connect; the server is independent of the AI provider.
 
 ## Tools
 
@@ -23,7 +24,11 @@ Copy the published folder to a stable location, then adapt the examples in `Clie
 
 For Paper documentation, set `PAPER_REVIT_DOCS_ROOT` to the repository root. `Configuration/paper-docs.allowlist.json` is the authoritative include/exclude policy. Agent rules, progress/spec files, build outputs, symlink escapes, paths outside that root, and content containing credential/private-key or developer-profile patterns remain denied even if a result ID is forged.
 
-Repository entries in `Configuration/repository-sources.json` ship disabled. Review license/attribution, set `enabled`, then either set `localPath` to a reviewed clone or run `Paper.RevitDocs.Mcp.exe sync <source-id>`. Sync resolves the configured branch/tag to a commit SHA, downloads a bounded GitHub archive, rejects traversal entries, and records the resolved revision. Restart the MCP client afterward. This explicit step prevents an AI search from silently downloading or executing code.
+`Configuration/repository-sources.json` enables reviewed MIT-licensed sources at pinned commit revisions; the Autodesk source remains disabled pending license and attribution review.
+Enabled sources require a reviewed clone configured through `localPath` or an explicit `Paper.RevitDocs.Mcp.exe sync <source-id>` command before search can return content.
+Sync resolves the configured revision to a commit SHA, downloads a bounded GitHub archive, rejects traversal entries, and records the resolved revision.
+The MCP client requires a restart after synchronization.
+Search never downloads or executes code.
 
 For an administrator-managed manifest outside the install folder, set `PAPER_REVIT_DOCS_REPOSITORY_CONFIG` to its full path. Persisted sync state stores only the resolved snapshot path, commit, and time; the current manifest always retains authority over enabled state, license, attribution, and file patterns.
 

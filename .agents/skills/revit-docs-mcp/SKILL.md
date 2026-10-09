@@ -5,7 +5,7 @@ description: Use when changing, testing, packaging, or configuring this Revit do
 
 # Revit Docs MCP
 
-Read `AGENTS.md` and `INSTRUCTION.md` first. This process is standalone `net8.0`; do not apply a Revit
+Read `AGENTS.md` and `INSTRUCTION.md` first. This process is standalone `net10.0`; do not apply a Revit
 DB/RL year configuration or add a Revit/PaperPlus runtime reference.
 
 ## Workflow
