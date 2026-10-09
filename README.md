@@ -71,6 +71,8 @@ The current release provides local STDIO only; it contains no HTTP endpoint, hos
 | Client or distribution route | Current support | Required next step |
 | --- | --- | --- |
 | Codex and Claude Desktop local configuration | STDIO configuration examples are included; Claude Desktop visible-UI validation remains pending. | Configure the executable and verify sources, search, and read in the client. |
+| Official MCP Registry | No NuGet package or registry listing is published. | Package and publish the local server on NuGet, then register its `server.json` for client discovery. |
+| Codex plugin or repository marketplace | No distributable plugin is packaged. | Bundle the MCP configuration and any user workflow skills in a plugin package. |
 | ChatGPT custom MCP connection | The local executable cannot be entered as a remote MCP URL. | Provide a reachable HTTPS MCP endpoint and test the connection in ChatGPT. |
 | Claude web custom connector | Requires a remote MCP server. | Provide a cloud-reachable MCP endpoint and add it in Connectors settings. |
 | Public ChatGPT directory | Not submitted. | Complete the remote server, client tests, privacy documentation, and OpenAI submission review. |
@@ -78,6 +80,7 @@ The current release provides local STDIO only; it contains no HTTP endpoint, hos
 
 Official setup and submission requirements are maintained in the [OpenAI MCP quickstart](https://developers.openai.com/plugins/build/app-quickstart), [OpenAI remote-server review requirements](https://developers.openai.com/plugins/deploy/app-review), [Claude local MCP guide](https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop), and [Claude remote-connector guide](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp).
 Publishing this GitHub repository does not register it in either product directory.
+The [Official MCP Registry publishing guide](https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/publish-mcp-registry) describes distribution through the shared MCP ecosystem; the [OpenAI plugin packaging guide](https://developers.openai.com/plugins/build/plugins) describes client-specific packaging.
 
 ## Commands
 
