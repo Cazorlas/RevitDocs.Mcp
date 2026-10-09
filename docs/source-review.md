@@ -17,6 +17,9 @@ Search never downloads a repository.
 The [shipped notices](../src/Paper.RevitDocs.Mcp/THIRD-PARTY-NOTICES.md) contain the reviewed MIT copyright and permission notices.
 Copies or substantial portions of reviewed source require these notices and any existing file copyright notices.
 [Building Coder source headers](https://github.com/jeremytammik/the_building_coder_samples/blob/cf3748045978bc35fcae88417c3024209be44fbe/BuildingCoder/CmdAnalyticalModelGeom.cs) also name Autodesk Inc.; those notices remain part of the source.
+The inspected `CmdAnalyticalModelGeom.cs` header contains a copyright notice, but no separate license terms or object-code-only distribution clause.
+The pinned repository's MIT license supplies the distribution grant for that file; the copyright notice remains intact.
+This differs from the inspected Autodesk SDK sample, whose header includes its own object-code-only distribution grant.
 Source content retains its upstream license and attribution independently of this project's MIT License.
 
 The Autodesk SDK root license identifies Jeremy Tammik and MIT, but the inspected Autodesk-owned sample grants distribution in object code form.
