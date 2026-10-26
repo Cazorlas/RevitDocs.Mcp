@@ -17,10 +17,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AngleSharp" Version="1.8.5" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.13" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.13" />
-    <PackageReference Include="ModelContextProtocol" Version="2.2.0" />
+    <PackageReference Include="AngleSharp" Version="1.8.6" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.14" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.14" />
+    <PackageReference Include="ModelContextProtocol" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>
